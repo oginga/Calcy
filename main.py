@@ -18,6 +18,7 @@ from kivy.uix.button import Button
 from kivy.uix.tabbedpanel import *
 from parser import *
 from calculations import operation
+from kivy.uix.image import Image
 
 '''
 This class overrides the insert_text method of the parent class to allow entry of digits,dot(.) and mathematical operators
@@ -45,16 +46,26 @@ class FloatInput(TextInput):
 			s='.'.join([re.sub(pat,'',s) for s in substring.split('.',1)])
 		return super(FloatInput,self).insert_text(s,from_undo=from_undo)
 
+class BackgroundImage(Image):
+	def __init__(self,**kwargs):
+		super(BackgroundImage,self).__init__(**kwargs)
+		self.size=self.texture_size
+
+
 
 class ThreeFace(FloatLayout):
 	def __init__(self,**kwargs):
 		super(ThreeFace,self).__init__(**kwargs)
-		
+		self.add_widget(BackgroundImage(source='back.jpg',allow_stretch=True,keep_ratio=False))
+		self.background='back.jpg'
 		def calculate(instance):
-			v_op_vList=[Num1_In.text,instance.text,Num2_In.text]
-			print v_op_vList
-			Res=operation(v_op_vList)
-			Results_In.text=Res
+			if Num1_In.text == '' or  Num2_In.text == '':
+				pass
+			else:	
+				v_op_vList=[Num1_In.text,instance.text,Num2_In.text]
+				print v_op_vList
+				Res=operation(v_op_vList)
+				Results_In.text=Res
 			
 		
 		Num1_Lbl=Label(text="Integer 1",size_hint=(None,None),height=30,width=60,pos_hint={'x':.4,"top":.9})
@@ -92,6 +103,7 @@ class ThreeFace(FloatLayout):
 class OneFace(FloatLayout):
 	def __init__(self,**kwargs):
 		super(OneFace,self).__init__(**kwargs)
+		self.add_widget(BackgroundImage(source='back.jpg',allow_stretch=True,keep_ratio=False))
 		
 		
 		def add_text(instance):
